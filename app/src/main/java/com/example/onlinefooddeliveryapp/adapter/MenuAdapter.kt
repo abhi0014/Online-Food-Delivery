@@ -58,5 +58,4 @@ class MenuAdapter(private val menuItems:MutableList<String>,private val menuItem
 }
 
 private fun OnClickListener.onItemClick(position: Int) {
-    TODO("Not yet implemented")
 }
