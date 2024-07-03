@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "378259377805",
+    "firebase_url": "https://online-food-delivery-app-3b305-default-rtdb.firebaseio.com",
+    "project_id": "online-food-delivery-app-3b305",
+    "storage_bucket": "online-food-delivery-app-3b305.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378259377805:android:c6a4e239302a30a23adcc4",
+        "android_client_info": {
+          "package_name": "com.example.adminpanel_onlinefooddeliveryapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "378259377805-vjoqc4nhlkh71hr1qlgbmhcmet3n4ra4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.adminpanel_onlinefooddeliveryapp",
+            "certificate_hash": "75b53046ac155fe9cdc2db762e9e721ba4ff671b"
+          }
+        },
+        {
+          "client_id": "378259377805-fm75q01mf5pdvl2nm8ucdnuconilnkck.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAUw1e5gaIqWOBUM-PKCh5UIaXcfPgi3A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "378259377805-fm75q01mf5pdvl2nm8ucdnuconilnkck.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
