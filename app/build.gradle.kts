@@ -58,4 +58,8 @@ dependencies {
     implementation ("com.github.denzcoskun:ImageSlideshow:0.1.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+//    Glide Dependency
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
 }

@@ -42,7 +42,7 @@
         app:layout_constraintTop_toBottomOf="@+id/detailsFoodName">
 
         <ImageView
-            android:id="@+id/DetailsFoodImage"
+            android:id="@+id/detailsFoodImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -63,7 +63,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView4" />
 
     <TextView
-        android:id="@+id/DescriptionTextView"
+        android:id="@+id/detailsFoodDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="0dp"
@@ -83,13 +83,13 @@
         android:layout_marginTop="36dp"
         android:text="Ingredients"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/DescriptionTextView"
+        app:layout_constraintEnd_toEndOf="@+id/detailsFoodDescription"
         app:layout_constraintHorizontal_bias="0.103"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DescriptionTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/detailsFoodDescription" />
 
     <TextView
-        android:id="@+id/ingredientsTextView"
+        android:id="@+id/detailsFoodIngredients"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -100,7 +100,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button3"
+        android:id="@+id/detailsAddToCart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/addtocartshape"
@@ -110,5 +110,5 @@
         android:layout_marginTop="64dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ingredientsTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/detailsFoodIngredients" />
 </androidx.constraintlayout.widget.ConstraintLayout>

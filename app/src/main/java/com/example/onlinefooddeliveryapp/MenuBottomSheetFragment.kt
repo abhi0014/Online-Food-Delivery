@@ -1,21 +1,25 @@
 package com.example.onlinefooddeliveryapp
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.onlinefooddeliveryapp.Model.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.onlinefooddeliveryapp.adapter.CartAdapter
 import com.example.onlinefooddeliveryapp.adapter.MenuAdapter
 import com.example.onlinefooddeliveryapp.databinding.FragmentMenuBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 
 class MenuBottomSheetFragment : BottomSheetDialogFragment (){
     private  lateinit var binding:FragmentMenuBottomSheetBinding
 
-
+    private lateinit var database : FirebaseDatabase
+    private lateinit var menuItems : MutableList<MenuItem>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -36,10 +40,41 @@ class MenuBottomSheetFragment : BottomSheetDialogFragment (){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val menufoodname = listOf("Burger","Sandwich","Pizza","Burger","Sandwich","Pizza","Burger","Sandwich","Pizza")
-        val menuitemprice = listOf("$5","$6","$7","$5","$6","$7","$5","$6","$7")
-        val menuimage = listOf(R.drawable.breakfast,R.drawable.green_salad,R.drawable.ice_cream,R.drawable.cupcakes,R.drawable.tea,R.drawable.rolls,R.drawable.breakfast,R.drawable.green_salad,R.drawable.ice_cream)
-        val adapter = MenuAdapter(ArrayList(menufoodname),ArrayList(menuitemprice),ArrayList(menuimage),requireContext())
+
+        retriveMenuItems()
+//        val adapter = MenuAdapter(ArrayList(menufoodname),ArrayList(menuitemprice),ArrayList(menuimage),requireContext())
+
+    }
+
+    private fun retriveMenuItems() {
+        database = FirebaseDatabase.getInstance()
+        val foodRef = database.reference.child("menu")
+
+        menuItems = mutableListOf()
+
+        foodRef.addListenerForSingleValueEvent(object :ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                for(foodSnapshot in snapshot.children)
+                {
+                    val menuItem = foodSnapshot.getValue(MenuItem::class.java)
+                    menuItem?.let { menuItems.add(it)  }
+                }
+
+//                Once Data recieve set To adapter
+                setAdapter()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+
+    }
+
+    private fun setAdapter() {
+        val adapter = MenuAdapter(menuItems,requireContext())
         binding.menuRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.menuRecyclerView.adapter = adapter
     }
