@@ -54,6 +54,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:20.5.0")
 
     implementation("com.google.firebase:firebase-storage")
+    implementation("com.google.firebase:firebase-firestore-ktx:25.0.0")
     testImplementation("junit:junit:4.13.2")
     implementation ("com.github.denzcoskun:ImageSlideshow:0.1.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -64,5 +65,9 @@ dependencies {
 
 //    Razorpay dependency
     implementation("com.razorpay:checkout:1.6.38")
+
+    //iText dependency to receipt generation of payment
+    implementation("com.itextpdf:itext7-core:7.1.15")
+    implementation("com.itextpdf:layout:7.1.15")
 
 }

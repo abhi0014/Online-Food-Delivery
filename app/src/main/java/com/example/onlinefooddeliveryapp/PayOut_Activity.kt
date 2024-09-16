@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import com.example.onlinefooddeliveryapp.Model.OrderDetails
 import com.example.onlinefooddeliveryapp.databinding.ActivityPayOutBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -14,10 +15,15 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.itextpdf.kernel.pdf.PdfWriter
+import com.itextpdf.layout.Document
+import com.itextpdf.kernel.pdf.PdfDocument
+import com.itextpdf.layout.element.Paragraph
 import com.razorpay.Checkout
 import com.razorpay.PaymentData
 import com.razorpay.PaymentResultWithDataListener
 import org.json.JSONObject
+import java.io.File
 
 class PayOut_Activity : AppCompatActivity() , PaymentResultWithDataListener {
     private lateinit var  binding:ActivityPayOutBinding
@@ -133,6 +139,9 @@ class PayOut_Activity : AppCompatActivity() , PaymentResultWithDataListener {
 
     private fun initPayment(email: String, phone: String, uname: String) {
 
+        Log.v("Init Email : " , email)
+        Log.v("Init phone : " , phone)
+        Log.v("Init unmae : " , uname)
 
         val activity: Activity = this
         val co = Checkout()
@@ -254,15 +263,77 @@ class PayOut_Activity : AppCompatActivity() , PaymentResultWithDataListener {
 
     }
 
-    override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
+    override fun onPaymentSuccess(razorpayPaymentID: String?, paymentData: PaymentData?) {
         Toast.makeText(this,"Payment Success",Toast.LENGTH_SHORT).show()
-        Log.v("Payment Data ", p1.toString())
+        try {
+            Log.i("PaymentSuccess", "Payment successful: $razorpayPaymentID")
+
+            // Fetch payment details
+            val email = paymentData?.userEmail ?: ""
+            val phone = paymentData?.userContact ?: ""
+            val uname = "Your User Name" // Replace with actual username if needed
+
+            Log.v("OnSuccess Email : " , email)
+            Log.v("OnSuccess phone : " , phone)
+            Log.v("OnSuccess unmae : " , uname)
+
+
+
+            if (razorpayPaymentID != null) {
+//                Generating pdf
+                generateReceipt(razorpayPaymentID, email, phone, uname, "5000")
+                shareReceipt()
+            }
+        } catch (e: Exception) {
+            Log.e("PaymentSuccess", "Exception in onPaymentSuccess", e)
+        }
+
     }
 
-    override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
-        Toast.makeText(this,"Error : ${p1}",Toast.LENGTH_SHORT).show()
+    override fun onPaymentError(code: Int, response: String?, paymentData: PaymentData?) {
+        Log.e("PaymentError", "Payment failed with code $code: $response")
+        Toast.makeText(this,"Error : ${response}",Toast.LENGTH_SHORT).show()
+
+    }
 
 
+//    Function called for the generating reciept of the payment
+    private fun generateReceipt(razorpayPaymentID: String, email: String, phone: String, uname: String, amount: String) {
+
+
+
+    Log.v("Generate Reciept Email : " , email)
+    Log.v("Generate Reciept phone : " , phone)
+    Log.v("Generate Reciept unmae : " , uname)
+    val pdfPath = getExternalFilesDir(null)?.absolutePath + "/payment_receipt.pdf"
+    val file = File(pdfPath)
+    val writer = PdfWriter(file)
+    val pdfDocument = PdfDocument(writer)
+    val document = Document(pdfDocument)
+
+    document.add(Paragraph("Payment Receipt"))
+    document.add(Paragraph("Name: $uname"))
+    document.add(Paragraph("Email: $email"))
+    document.add(Paragraph("Phone: $phone"))
+    document.add(Paragraph("Amount: $amount"))
+    document.add(Paragraph("Payment ID: $razorpayPaymentID"))
+
+    document.close()
+
+    Toast.makeText(this, "Receipt generated at $pdfPath", Toast.LENGTH_LONG).show()
+    }
+
+    private fun shareReceipt() {
+        val pdfPath = getExternalFilesDir(null)?.absolutePath + "/payment_receipt.pdf"
+        val file = File(pdfPath)
+        val uri = FileProvider.getUriForFile(this, applicationContext.packageName + ".provider", file)
+
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "application/pdf"
+        intent.putExtra(Intent.EXTRA_STREAM, uri)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+        startActivity(Intent.createChooser(intent, "Share Receipt"))
     }
 }
 
